@@ -1,7 +1,7 @@
 <p align="center">
-  <h1 align="center">nvim</h1>
+  <h1 align="center">nixvim</h1>
   <p align="center">
-    A modern Neovim configuration for NixOS
+    A modern Neovim configuration built for NixOS
     <br />
     <em>Code fast. Write beautifully.</em>
   </p>
@@ -15,32 +15,71 @@
 
 ---
 
-## Features
+## What Makes This Different
 
-- **NixOS Native** — No Mason, all LSPs and formatters installed via Nix
-- **Modern APIs** — Uses Neovim 0.11+ `vim.lsp.config` and `vim.lsp.enable`
-- **Lazy Loading** — Fast startup with [lazy.nvim](https://github.com/folke/lazy.nvim)
-- **Writing Mode** — Zen mode, Twilight, and soft wrap for distraction-free prose
-- **Full IDE** — LSP, completions, diagnostics, formatting, and more
-- **Beautiful** — Nord colorscheme with custom statusline
+Most Neovim configurations follow the same pattern: lspconfig, Mason, and a collection of popular plugins. This one takes a different approach.
 
-## Screenshot
+### Native Neovim 0.11+ APIs
 
-<!-- Add your screenshot here -->
-<!-- ![Screenshot](./screenshot.png) -->
+While most configs still use `require("lspconfig").server.setup()`, this configuration embraces the new built-in LSP API introduced in Neovim 0.11:
+
+```lua
+-- Old way (lspconfig)
+require("lspconfig").lua_ls.setup({ settings = { ... } })
+
+-- This config (native)
+vim.lsp.config.lua_ls = { settings = { ... } }
+vim.lsp.enable("lua_ls")
+```
+
+Cleaner. Fewer dependencies. Future-proof.
+
+### No Mason — Pure Nix
+
+Mason is great for portability, but it creates a parallel package ecosystem inside Neovim. On NixOS, this is redundant at best, problematic at worst.
+
+This config expects all LSPs and formatters to be installed via Nix — declaratively, reproducibly, and managed alongside the rest of your system. No imperative tool managers fighting your package manager.
+
+```nix
+# Everything in one place
+environment.systemPackages = with pkgs; [
+  rust-analyzer
+  typescript-language-server
+  prettierd
+  stylua
+];
+```
+
+### Built for Writing, Not Just Coding
+
+Most developer configs ignore prose. This one includes a complete writing environment:
+
+| Feature | Purpose |
+|---------|---------|
+| **Zen Mode** | Distraction-free fullscreen editing |
+| **Twilight** | Dims inactive code blocks |
+| **Pencil** | Soft line wraps for prose |
+| **Markdown Preview** | Live browser preview |
+| **Spell Check** | Toggle with `<leader>ss` |
+
+Perfect for documentation, notes, or long-form writing.
+
+### Aggressive Lazy Loading
+
+Every plugin loads on demand — by event, command, keymap, or filetype. Startup stays fast regardless of how many plugins are installed.
+
+---
 
 ## Requirements
 
 - **Neovim 0.11+**
 - **NixOS** or Nix package manager
 
-### Nix Packages
-
-Install these via your NixOS configuration or home-manager:
+### Required Nix Packages
 
 ```nix
 environment.systemPackages = with pkgs; [
-  # LSP Servers
+  # Language Servers
   typescript-language-server
   vscode-langservers-extracted  # html, css, eslint, json
   rust-analyzer
@@ -58,18 +97,22 @@ environment.systemPackages = with pkgs; [
 ];
 ```
 
+---
+
 ## Installation
 
 ```bash
 # Backup existing config
 mv ~/.config/nvim ~/.config/nvim.bak
 
-# Clone this repository
-git clone https://github.com/YOUR_USERNAME/nvim.git ~/.config/nvim
+# Clone
+git clone https://codeberg.org/querulantenkind/nixvim.git ~/.config/nvim
 
-# Start Neovim (plugins install automatically)
+# Launch — plugins install automatically
 nvim
 ```
+
+---
 
 ## Structure
 
@@ -78,76 +121,122 @@ nvim
 ├── init.lua                 # Entry point
 ├── lua/
 │   ├── config/
-│   │   ├── options.lua      # Vim options (leader = space)
+│   │   ├── options.lua      # Core settings, leader = space
 │   │   ├── keymaps.lua      # Global keybindings
 │   │   └── lazy.lua         # Plugin manager bootstrap
 │   └── plugins/
-│       ├── lsp.lua          # Language servers
-│       ├── treesitter.lua   # Syntax highlighting
-│       ├── completion.lua   # Autocompletion (nvim-cmp)
+│       ├── lsp.lua          # Language server configuration
+│       ├── treesitter.lua   # Syntax parsing
+│       ├── completion.lua   # Autocompletion engine
 │       ├── telescope.lua    # Fuzzy finder
-│       ├── formatting.lua   # Code formatting (conform.nvim)
-│       ├── editor.lua       # Editing helpers
-│       ├── ui.lua           # UI components
+│       ├── formatting.lua   # Code formatting
+│       ├── editor.lua       # Editing utilities
+│       ├── ui.lua           # Interface components
 │       ├── colorscheme.lua  # Nord theme
-│       └── writing.lua      # Prose & markdown tools
+│       └── writing.lua      # Prose and markdown tools
 └── CLAUDE.md                # AI assistant context
 ```
 
+---
+
 ## Keybindings
 
-Leader key: `Space`
+Leader key: **Space**
 
 ### Navigation
 
-| Key | Description |
-|-----|-------------|
+| Key | Action |
+|-----|--------|
 | `<leader>ff` | Find files |
 | `<leader>fg` | Live grep |
 | `<leader>fb` | List buffers |
-| `<leader>/` | Search in buffer |
+| `<leader>/` | Search in current buffer |
 | `<leader>n` | Toggle file tree |
-| `<S-h>` / `<S-l>` | Previous / Next buffer |
+| `S-h` / `S-l` | Previous / next buffer |
 
-### LSP
+### Language Server
 
-| Key | Description |
-|-----|-------------|
+| Key | Action |
+|-----|--------|
 | `gd` | Go to definition |
-| `gr` | Go to references |
+| `gr` | Find references |
 | `gi` | Go to implementation |
 | `K` | Hover documentation |
-| `<leader>ca` | Code action |
+| `<leader>ca` | Code actions |
 | `<leader>rn` | Rename symbol |
 | `<leader>cf` | Format buffer |
 
-### Git
+### Git Integration
 
-| Key | Description |
-|-----|-------------|
-| `]h` / `[h` | Next / Previous hunk |
+| Key | Action |
+|-----|--------|
+| `]h` / `[h` | Next / previous hunk |
 | `<leader>hs` | Stage hunk |
 | `<leader>hr` | Reset hunk |
 | `<leader>hp` | Preview hunk |
-| `<leader>hb` | Blame line |
+| `<leader>hb` | Blame current line |
 
 ### Writing
 
-| Key | Description |
-|-----|-------------|
+| Key | Action |
+|-----|--------|
 | `<leader>z` | Toggle Zen Mode |
 | `<leader>tw` | Toggle Twilight |
-| `<leader>mp` | Markdown Preview |
+| `<leader>mp` | Markdown preview |
 | `<leader>ss` | Toggle spell check |
+
+---
+
+## Supported Languages
+
+| Language | Server | Formatter |
+|----------|--------|-----------|
+| TypeScript / JavaScript | ts_ls | prettierd |
+| HTML / CSS | html, cssls | prettierd |
+| Rust | rust_analyzer | rustfmt |
+| Go | gopls | gofmt, goimports |
+| C / C++ | clangd | clang-format |
+| Python | pyright, ruff | ruff_format |
+| Lua | lua_ls | stylua |
+| Nix | — | nixfmt |
+
+---
+
+## Extending
+
+### Add a Language Server
+
+1. Install via Nix
+2. Configure in `lua/plugins/lsp.lua`:
+
+```lua
+local servers = {
+    your_server = {
+        settings = { ... },
+    },
+}
+```
+
+### Add a Formatter
+
+1. Install via Nix
+2. Configure in `lua/plugins/formatting.lua`:
+
+```lua
+formatters_by_ft = {
+    your_filetype = { "your_formatter" },
+}
+```
+
+---
 
 ## Plugins
 
-| Plugin | Description |
-|--------|-------------|
+| Plugin | Role |
+|--------|------|
 | [lazy.nvim](https://github.com/folke/lazy.nvim) | Plugin manager |
-| [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) | LSP configurations |
-| [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting |
-| [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) | Autocompletion |
+| [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax parsing |
+| [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) | Completion engine |
 | [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder |
 | [conform.nvim](https://github.com/stevearc/conform.nvim) | Formatting |
 | [nord.nvim](https://github.com/shaunsingh/nord.nvim) | Colorscheme |
@@ -155,54 +244,36 @@ Leader key: `Space`
 | [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git integration |
 | [nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua) | File explorer |
 | [which-key.nvim](https://github.com/folke/which-key.nvim) | Keybinding hints |
-| [zen-mode.nvim](https://github.com/folke/zen-mode.nvim) | Distraction-free writing |
-| [twilight.nvim](https://github.com/folke/twilight.nvim) | Dim inactive code |
 | [trouble.nvim](https://github.com/folke/trouble.nvim) | Diagnostics list |
+| [zen-mode.nvim](https://github.com/folke/zen-mode.nvim) | Distraction-free editing |
+| [twilight.nvim](https://github.com/folke/twilight.nvim) | Focus mode |
 
-## Customization
+---
 
-### Adding a Language Server
+## Non-NixOS Usage
 
-1. Install the LSP via Nix
-2. Add to `lua/plugins/lsp.lua`:
-   ```lua
-   local servers = {
-       your_lsp = {
-           settings = { ... },  -- optional
-       },
-   }
-   ```
+This config works on any distribution. The Lua configuration is distro-agnostic — it simply expects the language servers and formatters to exist in your `$PATH`.
 
-### Adding a Formatter
+Install them via your package manager, npm, pip, or cargo:
 
-1. Install the formatter via Nix
-2. Add to `lua/plugins/formatting.lua`:
-   ```lua
-   formatters_by_ft = {
-       your_filetype = { "your_formatter" },
-   }
-   ```
+```bash
+# Arch
+pacman -S typescript-language-server rust-analyzer gopls lua-language-server stylua
+
+# npm
+npm i -g typescript-language-server prettierd
+
+# pip
+pip install ruff
+
+# cargo
+cargo install stylua
+```
+
+Alternatively, add Mason back for automatic tool management.
+
+---
 
 ## License
 
-MIT License
-
-Copyright (c) 2025 Querulantenkind
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+MIT License — Luca Gabriel Oelfke, 2025
