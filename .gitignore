@@ -1,0 +1,8 @@
+# Plugin-Manager (wird automatisch generiert)
+lazy-lock.json
+
+# Claude Code lokale Einstellungen
+.claude/
+
+# Neovim generierte Dateien
+spell/
