@@ -3,10 +3,10 @@ return {
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        event = "VeryLazy",
+        lazy = false,
         opts = {
             options = {
-                theme = "nord",
+                theme = "catppuccin",
                 component_separators = { left = "", right = "" },
                 section_separators = { left = "", right = "" },
                 globalstatus = true,
@@ -26,7 +26,7 @@ return {
     {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
-        event = { "BufReadPost", "BufNewFile" },
+        lazy = false,
         opts = {
             indent = { char = "│" },
             scope = { enabled = true },
@@ -39,7 +39,7 @@ return {
     -- Git signs
     {
         "lewis6991/gitsigns.nvim",
-        event = { "BufReadPre", "BufNewFile" },
+        lazy = false,
         opts = {
             signs = {
                 add = { text = "│" },
@@ -67,7 +67,7 @@ return {
     -- Which-key
     {
         "folke/which-key.nvim",
-        event = "VeryLazy",
+        lazy = false,
         opts = {
             spec = {
                 { "<leader>f", group = "find" },
@@ -81,6 +81,7 @@ return {
     -- File explorer
     {
         "nvim-tree/nvim-tree.lua",
+        lazy = false,
         dependencies = { "nvim-tree/nvim-web-devicons" },
         keys = {
             { "<leader>n", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file tree" },

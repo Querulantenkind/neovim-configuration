@@ -18,7 +18,7 @@ lua/plugins/
   formatting.lua             # conform.nvim, Format-on-Save
   editor.lua                 # autopairs, surround, comments, trouble
   ui.lua                     # lualine, gitsigns, nvim-tree, which-key, indent-blankline
-  colorscheme.lua            # Nord Theme
+  colorscheme.lua            # Catppuccin Theme
   writing.lua                # zen-mode, twilight, pencil, markdown-preview
 ```
 
@@ -26,7 +26,7 @@ lua/plugins/
 
 - **Neovim 0.11+ APIs** verwenden (`vim.lsp.config`, `vim.lsp.enable`)
 - **Kein Mason** - LSPs/Formatter über Nix-Pakete installieren
-- **Lazy-Loading** - Plugins mit `event`, `cmd`, `keys` oder `ft` laden
+- **Eager Loading** - Alle Plugins werden beim Start geladen (`lazy = false`)
 - **Deutsche Kommentare** in config-Dateien erlaubt
 
 ## Sprachen

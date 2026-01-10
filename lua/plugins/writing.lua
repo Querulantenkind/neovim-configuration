@@ -2,7 +2,7 @@ return {
     -- Zen Mode für ablenkungsfreies Schreiben
     {
         "folke/zen-mode.nvim",
-        cmd = "ZenMode",
+        lazy = false,
         keys = {
             { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" },
         },
@@ -29,7 +29,7 @@ return {
     -- Twilight - dimmt inaktive Absätze
     {
         "folke/twilight.nvim",
-        cmd = "Twilight",
+        lazy = false,
         keys = {
             { "<leader>tw", "<cmd>Twilight<cr>", desc = "Toggle Twilight" },
         },
@@ -47,7 +47,7 @@ return {
     -- Pencil - optimierte Einstellungen für Prosa
     {
         "preservim/vim-pencil",
-        ft = { "markdown", "text", "tex" },
+        lazy = false,
         init = function()
             vim.g["pencil#wrapModeDefault"] = "soft"
             vim.g["pencil#autoformat"] = 1
@@ -57,8 +57,7 @@ return {
     -- Markdown Preview
     {
         "iamcco/markdown-preview.nvim",
-        cmd = { "MarkdownPreviewToggle", "MarkdownPreview" },
-        ft = { "markdown" },
+        lazy = false,
         build = function()
             vim.fn["mkdp#util#install"]()
         end,

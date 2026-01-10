@@ -2,7 +2,7 @@ return {
     -- Auto pairs
     {
         "windwp/nvim-autopairs",
-        event = "InsertEnter",
+        lazy = false,
         opts = {},
         config = function(_, opts)
             require("nvim-autopairs").setup(opts)
@@ -15,10 +15,7 @@ return {
     -- Comments
     {
         "numToStr/Comment.nvim",
-        keys = {
-            { "gcc", mode = "n", desc = "Comment line" },
-            { "gc", mode = { "n", "v" }, desc = "Comment" },
-        },
+        lazy = false,
         opts = {},
     },
 
@@ -26,14 +23,14 @@ return {
     {
         "kylechui/nvim-surround",
         version = "*",
-        event = "VeryLazy",
+        lazy = false,
         opts = {},
     },
 
     -- Better escape
     {
         "max397574/better-escape.nvim",
-        event = "InsertEnter",
+        lazy = false,
         opts = {
             mapping = { "jk" },
         },
@@ -42,7 +39,7 @@ return {
     -- Todo comments
     {
         "folke/todo-comments.nvim",
-        event = { "BufReadPost", "BufNewFile" },
+        lazy = false,
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {},
         keys = {
@@ -53,8 +50,8 @@ return {
     -- Trouble (better diagnostics list)
     {
         "folke/trouble.nvim",
+        lazy = false,
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        cmd = "Trouble",
         keys = {
             { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
             { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer diagnostics" },
