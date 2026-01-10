@@ -94,6 +94,11 @@ environment.systemPackages = with pkgs; [
   rustfmt
   stylua
   nixfmt-rfc-style
+
+  # Debug Adapters (optional)
+  lldb          # Rust, C, C++
+  delve         # Go
+  python3Packages.debugpy  # Python
 ];
 ```
 
@@ -133,7 +138,9 @@ nvim
 │       ├── editor.lua       # Editing utilities
 │       ├── ui.lua           # Interface components
 │       ├── colorscheme.lua  # Nord theme
-│       └── writing.lua      # Prose and markdown tools
+│       ├── writing.lua      # Prose and markdown tools
+│       ├── harpoon.lua      # Quick file navigation
+│       └── dap.lua          # Debugging (DAP)
 └── CLAUDE.md                # AI assistant context
 ```
 
@@ -184,6 +191,30 @@ Leader key: **Space**
 | `<leader>tw` | Toggle Twilight |
 | `<leader>mp` | Markdown preview |
 | `<leader>ss` | Toggle spell check |
+
+### Harpoon
+
+| Key | Action |
+|-----|--------|
+| `<leader>a` | Add file to Harpoon |
+| `<leader>h` | Toggle Harpoon menu |
+| `<leader>1-4` | Jump to file 1-4 |
+| `C-S-P` / `C-S-N` | Previous / next Harpoon file |
+
+### Debugging (DAP)
+
+| Key | Action |
+|-----|--------|
+| `<leader>db` | Toggle breakpoint |
+| `<leader>dB` | Conditional breakpoint |
+| `<leader>dc` | Continue |
+| `<leader>di` | Step into |
+| `<leader>do` | Step over |
+| `<leader>dO` | Step out |
+| `<leader>du` | Toggle DAP UI |
+| `<leader>de` | Eval expression |
+| `F5` | Continue |
+| `F10` / `F11` | Step over / into |
 
 ---
 
@@ -247,6 +278,9 @@ formatters_by_ft = {
 | [trouble.nvim](https://github.com/folke/trouble.nvim) | Diagnostics list |
 | [zen-mode.nvim](https://github.com/folke/zen-mode.nvim) | Distraction-free editing |
 | [twilight.nvim](https://github.com/folke/twilight.nvim) | Focus mode |
+| [harpoon](https://github.com/ThePrimeagen/harpoon) | Quick file navigation |
+| [nvim-dap](https://github.com/mfussenegger/nvim-dap) | Debug Adapter Protocol |
+| [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui) | Debugging UI |
 
 ---
 

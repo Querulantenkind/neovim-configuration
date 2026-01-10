@@ -20,6 +20,8 @@ lua/plugins/
   ui.lua                     # lualine, gitsigns, nvim-tree, which-key, indent-blankline
   colorscheme.lua            # Catppuccin Theme
   writing.lua                # zen-mode, twilight, pencil, markdown-preview
+  harpoon.lua                # Schnelles Wechseln zwischen markierten Dateien
+  dap.lua                    # Debugging (nvim-dap, dap-ui, virtual-text)
 ```
 
 ## Konventionen
@@ -107,3 +109,36 @@ Leader: `Space`
 | `<leader>z` | Zen Mode |
 | `<leader>mp` | Markdown Preview |
 | `<leader>ss` | Toggle spell check |
+
+### Harpoon
+| Key | Beschreibung |
+|-----|--------------|
+| `<leader>a` | Add file to Harpoon |
+| `<leader>h` | Toggle Harpoon menu |
+| `<leader>1-4` | Jump to file 1-4 |
+| `<C-S-P>/<C-S-N>` | Prev/Next Harpoon file |
+
+### Debugging (DAP)
+| Key | Beschreibung |
+|-----|--------------|
+| `<leader>db` | Toggle breakpoint |
+| `<leader>dB` | Conditional breakpoint |
+| `<leader>dc` | Continue |
+| `<leader>di` | Step into |
+| `<leader>do` | Step over |
+| `<leader>dO` | Step out |
+| `<leader>dr` | Restart |
+| `<leader>dq` | Terminate |
+| `<leader>du` | Toggle DAP UI |
+| `<leader>de` | Eval expression |
+| `<F5>` | Continue |
+| `<F10>` | Step over |
+| `<F11>` | Step into |
+
+## Debug Adapter (Nix-Pakete)
+
+| Sprache | Adapter | Nix-Paket |
+|---------|---------|-----------|
+| Rust/C/C++ | lldb-dap | `lldb` |
+| Go | delve | `delve` |
+| Python | debugpy | `python3Packages.debugpy` |
